@@ -13,8 +13,8 @@ services:
       TZ: 'Europe/Berlin'
       WEBPASSWORD: ${PH_WEBPASSWORD} 
     volumes:
-      - './etc-pihole/:/etc/pihole/'
-      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - '../../home-infrastructure-data/pihole/etc-pihole/:/etc/pihole/'
+      - '../../home-infrastructure-data/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
     cap_add:
