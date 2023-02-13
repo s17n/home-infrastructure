@@ -5,6 +5,8 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     restart: unless-stopped
+    networks: 
+      - extern
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -13,9 +15,20 @@ services:
       TZ: 'Europe/Berlin'
       WEBPASSWORD: ${PH_WEBPASSWORD} 
     volumes:
-      - '../../home-infrastructure-data/pihole/etc-pihole/:/etc/pihole/'
-      - '../../home-infrastructure-data/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - '${HOME_INFRASTRUCTURE_DATA}/pihole/etc-pihole/:/etc/pihole/'
+      - '${HOME_INFRASTRUCTURE_DATA}/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pihole.entrypoints=https"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.pihole.tls=true"
+      - "traefik.http.routers.pihole.tls.certresolver=dns-cloudflare"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
     # Recommended but not required (DHCP needs NET_ADMIN)
     #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-    cap_add:
-      - NET_ADMIN
+    #cap_add:
+    #  - NET_ADMIN
+
+networks:
+  extern:
+    external: true

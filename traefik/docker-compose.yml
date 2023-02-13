@@ -1,0 +1,44 @@
+version: '3'
+services:
+  traefik:
+    image: traefik:v2.9.6
+    container_name: traefik
+    restart: unless-stopped
+    networks:
+      - extern
+    ports:
+      - 80:80
+      - 443:443
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1" # https://doc.traefik.io/traefik/v2.3/providers/docker/
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/traefik.yml:/traefik.yml:ro
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/fileprovider:/fileprovider:ro
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/.htpasswd:/.htpasswd:ro
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/acme/acme.json:/acme.json
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/log/traefik.log:/traefik.log
+      - ${HOME_INFRASTRUCTURE_DATA}/traefik/log/access.log:/access.log
+    labels:
+      - "traefik.enable=true"
+      # HTTP-to-HTTPS Redirect
+      - "traefik.http.routers.http-catchall.entrypoints=http"
+      - "traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # HTTP Routers
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certResolver=dns-cloudflare"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=middlewares-basic-auth@file"
+
+    environment:
+      - TZ="Europe/Berlin"
+      - CF_API_EMAIL=$CLOUDFLARE_EMAIL
+      - CF_API_KEY=$CLOUDFLARE_API_KEY
+
+networks:
+  extern:
+    external: true

@@ -1,1 +1,3 @@
 pihole/.env
+portainer/.env
+traefik/.env
