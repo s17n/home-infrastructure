@@ -1,0 +1,17 @@
+version: '3'
+services:
+  homebridge:
+    image: oznu/homebridge:latest
+    container_name: homebridge
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - '${HI_DATA}/homebridge:/homebridge'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homebridge.entrypoints=https"
+      - "traefik.http.routers.homebridge.rule=Host(`homebridge.${HI_DOMAIN_NAME}`)"
+      - "traefik.http.routers.homebridge.tls=true"
+      - "traefik.http.routers.homebridge.tls.certresolver=dns-cloudflare"
+      - "traefik.http.services.homebridge.loadbalancer.server.port=8581"
+      - "docker.group=homebridge"

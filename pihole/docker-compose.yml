@@ -15,12 +15,12 @@ services:
       TZ: 'Europe/Berlin'
       WEBPASSWORD: ${PH_WEBPASSWORD} 
     volumes:
-      - '${HOME_INFRASTRUCTURE_DATA}/pihole/etc-pihole/:/etc/pihole/'
-      - '${HOME_INFRASTRUCTURE_DATA}/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - '${HI_DATA}/pihole/etc-pihole/:/etc/pihole/'
+      - '${HI_DATA}/pihole/etc-dnsmasq.d/:/etc/dnsmasq.d/'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole.entrypoints=https"
-      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${HI_DOMAIN_NAME}`)"
       - "traefik.http.routers.pihole.tls=true"
       - "traefik.http.routers.pihole.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.pihole.loadbalancer.server.port=80"

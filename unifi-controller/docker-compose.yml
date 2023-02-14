@@ -1,0 +1,41 @@
+version: "2.1"
+services:
+  unifi-controller:
+    image: lscr.io/linuxserver/unifi-controller:7.1.66-ls151
+    container_name: unifi-controller
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Europe/Berlin
+      - MEM_LIMIT=1024M #optional
+    volumes:
+      - '${HI_DATA}/unify-controller/config:/config'
+    networks:
+      - extern        
+    ports:
+      - 3478:3478/udp    # Unifi STUN port
+      - 10001:10001/udp  # Required for AP discovery
+      - 8080:8080        # Required for device communication
+      - 8443:8443        # Unifi web admin port
+      - 1900:1900/udp    # Required for Make controller discoverable on L2 network option
+#      - 8843:8843        # optional, Unifi guest portal HTTPS redirect port
+#      - 8880:8880        # optional, Unifi guest portal HTTP redirect port
+#      - 6789:6789        # optional, For mobile throughput test
+#      - 5514:5514        # optional, Remote syslog port
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=extern"
+      - "traefik.http.routers.unifi.entrypoints=https"
+      - "traefik.http.routers.unifi.rule=Host(`unifi.${HI_DOMAIN_NAME}`)"
+      - "traefik.http.routers.unifi.tls=true"
+      - "traefik.http.routers.unifi.tls.certResolver=dns-cloudflare"
+      - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8443"
+      - "traefik.http.routers.unifi.middlewares=unifiHeaders@file"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+
+networks:
+  extern:
+    external: true
+

@@ -1,0 +1,27 @@
+version: '3'
+services:
+  webdav:
+    image: s17n/webdav:1.0
+    container_name: webdav
+    restart: "unless-stopped"
+    networks: 
+      - extern
+    ports:
+      - "8008:80"
+    environment:
+      AUTH_TYPE: Digest
+    volumes:
+      - '${HI_DATA}/webdav/user.passwd:/user.passwd'
+      - '${HI_DATA}/webdav/dav:/var/lib/dav'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.devonthink.entrypoints=https"
+      - "traefik.http.routers.devonthink.rule=Host(`devonthink.{HI_DOMAIN_NAME}}`)"
+      - "traefik.http.routers.devonthink.tls=true"
+      - "traefik.http.routers.devonthink.tls.certresolver=dns-cloudflare"
+      - "traefik.http.services.devonthink.loadbalancer.server.scheme=http"
+      - "traefik.http.services.devonthink.loadbalancer.server.port=80"
+ 
+networks:
+  extern:
+    external: true
