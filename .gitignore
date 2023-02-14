@@ -1,3 +1,2 @@
-pihole/.env
-portainer/.env
-traefik/.env
+.DS_Store
+**/.env
