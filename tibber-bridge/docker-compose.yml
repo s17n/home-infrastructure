@@ -1,0 +1,9 @@
+version: '3'
+services:
+  tibber:
+    image: s17n/tibber-bridge:latest
+    container_name: tibber-bridge
+    restart: unless-stopped
+    environment:
+      - TIBBER_API_TOKEN=${TIBBER_API_TOKEN} 
+      - TIBBER_MQTT_BROKER=${TIBBER_MQTT_BROKER}
