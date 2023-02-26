@@ -1,7 +1,7 @@
 version: "2"
 services:
   influxdb:
-    image: influxdb:1.8
+    image: influxdb:${INFLUXDB_TAG}
     container_name: influxdb
     restart: unless-stopped
     networks: 
@@ -17,7 +17,7 @@ services:
       - INFLUXDB_ADMIN_ENABLED=true
 
   chronograf:
-    image: chronograf:latest
+    image: chronograf:${CHRONOGRAF_TAG}
     container_name: chronograf
     restart: unless-stopped
     networks: 
@@ -32,7 +32,7 @@ services:
       - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
 
   telegraf:
-    image: telegraf:latest
+    image: telegraf:${TELEGRAF_TAG}
     container_name: telegraf
     restart: unless-stopped
     networks: 
