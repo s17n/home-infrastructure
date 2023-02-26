@@ -44,15 +44,17 @@ services:
       HOST_PROC: /rootfs/proc
       HOST_SYS: /rootfs/sys
       HOST_ETC: /rootfs/etc
+      TIBBER_ACCESS_TOKEN: ${TIBBER_ACCESS_TOKEN}
     volumes:
-     - '${HI_DATA}/influxdb/telegraf.conf:/etc/telegraf/telegraf.conf:ro'
-     - '${HI_DATA}/influxdb/script.sh:/etc/telegraf/script.sh:ro'
-     - '${HI_DATA}/influxdb/tibber_data:/etc/tibber_data:rw'
+     - './telegraf:/etc/telegraf:ro'
+     - '${TIBBER_SCRIPTS}:/etc/tibber/bin:rw'
+     - '${TIBBER_DATA}:/etc/tibber/data:rw'
      - '/var/run/docker.sock:/var/run/docker.sock:ro'
      - '/sys:/rootfs/sys:ro'
      - '/proc:/rootfs/proc:ro'
      - '/etc:/rootfs/etc:ro'
-     
+    command: --config-directory /etc/telegraf/telegraf.d
+
 volumes:
   influxdb-storage:
   chronograf-storage:
