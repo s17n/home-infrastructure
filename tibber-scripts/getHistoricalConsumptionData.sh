@@ -14,8 +14,9 @@ afterValueAsBase64=`echo -n $afterValueAsString|base64`
 #afterValueAsBase64="MjAyMy0wMi0xNVQwOTowMDowMC4wMDArMDE6MDA="
 #echo "afterValueAsBase64: $afterValueAsBase64"
 
-queryFromFile=`cat tibber_query_01.ql`
-#echo "queryFromFile: $queryFromFile"
+scriptDir=`dirname "$0"`
+queryFromFile=$(cat $scriptDir/tibber_query_01.ql)
+#echo $queryFromFile
 
 queryString=`echo ${queryFromFile/AFTER_VALUE/"$afterValueAsBase64"}`
 #echo $queryString
