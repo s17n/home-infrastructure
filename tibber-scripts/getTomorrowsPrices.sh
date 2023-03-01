@@ -1,13 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
-TIBBER_ACCESS_TOKEN="${TIBBER_ACCESS_TOKEN}"
-TIBBER_DOWNLOAD_DIR="${TIBBER_DOWNLOAD_DIR}"
+tibberAccessToken="${TIBBER_ACCESS_TOKEN}"
+tibberDownloadDir="${TIBBER_DOWNLOAD_DIR}"
 
-tibber_data=$(curl -s \
--H "Authorization: Bearer $TIBBER_ACCESS_TOKEN" \
+scriptDir=`dirname "$0"`
+queryString=$(cat $scriptDir/tibber_query_03.ql)
+#echo "queryString: $queryString" >> /etc/tibber/bin/debug.log
+
+CURL_D_PARAM="{\"query\":\"$queryString\"}"
+#echo "curl -d parameter is: $CURL_D_PARAM" >> /etc/tibber/bin/debug.log 
+
+tibberData=`curl \
+-H "Authorization: Bearer $tibberAccessToken" \
 -H "Content-Type: application/json" \
 -X POST \
--d  '{"query":"{ viewer{ homes { currentSubscription { priceInfo { tomorrow { startsAt total } } } } } }"}' https://api.tibber.com/v1-beta/gql )
+-d "$CURL_D_PARAM" \
+https://api.tibber.com/v1-beta/gql`
 
 timestamp=$(date "+%Y%m%d_%H%M%S")
 
@@ -15,4 +23,4 @@ executionTimestamp=$(date "+%Y%m%d-%H%M%S")
 filename=$executionTimestamp"_priceinfo.json"
 #echo "filename: $filename"
 
-echo $tibber_data > "$TIBBER_DOWNLOAD_DIR/$filename"
+echo $tibberData > "$tibberDownloadDir/$filename"
