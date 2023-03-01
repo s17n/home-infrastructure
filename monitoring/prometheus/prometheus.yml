@@ -16,8 +16,5 @@ scrape_configs:
     metrics_path: /metrics
     static_configs:
       - targets:
-          - 'pi3.home:9090' 
-          - 'pi3.home:9100' 
-          - 'idonotexists:564'
-
-
+          - '192.168.1.12:9100' 
+          - '192.168.1.13:9100'

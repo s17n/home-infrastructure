@@ -14,7 +14,6 @@ services:
       - prometheus-data:/prometheus
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
 
-
   grafana:
     image: grafana/grafana:latest
     container_name: grafana    
@@ -37,20 +36,21 @@ services:
       - "traefik.http.services.grafana.loadbalancer.server.scheme=http"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
-#  alertmanager:
-#    image: prom/alertmanager:latest
-#    restart: unless-stopped
-#    ports:
-#      - "9093:9093"
-#    volumes:
-#      - "./alertmanager:/config"
-#      - alertmanager-data:/data
-#    command: --config.file=/config/alertmanager.yml --log.level=debug 
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager    
+    restart: unless-stopped
+    ports:
+      - 9093:9093
+    volumes:
+      - "./alertmanager:/config"
+      - alertmanager-data:/data
+    command: --config.file=/config/alertmanager.yml --log.level=debug 
 
 volumes:
   prometheus-data:
   grafana-data:
-# alertmanager-data:
+  alertmanager-data:
 
 networks:
   extern:
