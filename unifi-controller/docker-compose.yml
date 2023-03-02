@@ -1,17 +1,17 @@
-version: "2.1"
+version: "3"
 services:
   unifi-controller:
-    image: lscr.io/linuxserver/unifi-controller:7.1.66-ls151
+    image: lscr.io/linuxserver/unifi-controller:${UNIFI_CONTROLLER_TAG}
     container_name: unifi-controller
     environment:
-      - PUID=1001
-      - PGID=1001
+      - PUID=1000
+      - PGID=1000
       - TZ=Europe/Berlin
-      - MEM_LIMIT=1024M #optional
+      - MEM_LIMIT=1024 #optional
     volumes:
       - '${HI_DATA}/unify-controller/config:/config'
-    networks:
-      - extern        
+#    networks:
+#      - extern        
     ports:
       - 3478:3478/udp    # Unifi STUN port
       - 10001:10001/udp  # Required for AP discovery
@@ -35,7 +35,7 @@ services:
       - "traefik.http.routers.unifi.middlewares=unifiHeaders@file"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
-networks:
-  extern:
-    external: true
+#networks:
+#  extern:
+#    external: true
 
