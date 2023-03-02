@@ -1,0 +1,51 @@
+**Container & Configuraion Overview**
+
+- [homebridge]:
+    - Plugins:
+        - Homebridge UI
+        - Homebridge Shelly
+        - Homebridge Tuya Plattform
+- [influxdb]:
+    - [influxdb]:
+        - DB.RetentionPolicy: telegraf.autogen w/ Measurements:
+            - tibber_v2
+            - mqtt_consumer
+    - [telegraf]:
+        - Inputs:
+            - mqtt_consumer: shellies/*
+            - exec: tibber - getLastHourConsumptionData.sh
+            - dir-monitor: tibber - priceinfo
+            - dir-monitor: tibber - consumption
+        - Output:
+            - stdout
+            - influxdb: 
+    - [chronograf]:
+- [loki]: 
+    - [loki]: 
+    - [promtail]: w/ scrape_configs:
+        - system (var/log/*log)
+        - syslog (0.0.0.0:1514)
+        - docker (docker_sd)
+- [monitoring]:
+    - [alertmanager]:
+    - [prometheus]:
+    - [grafana]:
+        - Data Sources:
+            - influxdb: Tibber (historical), Shelly (historical + live)
+            - mosquitto: Tibber (live)
+            - prometheus: Node Exporter
+            - loki:
+- [mosquitto]:
+- [node-exporter]:
+- [pihole]:
+- [portainer]:
+- [tibber-bridger]:
+- tibber-scripts:
+- [traefik]:
+- [unifi-controller]
+- [webdav]: 
+---
+- [Docker Composition]
+    - [Container]
+    -   Domain specific configuration artifact type 
+        - configuration artifact element
