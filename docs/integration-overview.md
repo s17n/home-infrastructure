@@ -2,41 +2,41 @@
 
 ### DASHBOARDS: 
 <pre>
-o--- 3000/tcp ---[ Grafana       ]-----c o--- 8086/tcp ---[ influxdb      ]
-                 [               ]  |--c o--- 1883/tcp ---[ mosquitto     ]
-                 [               ]  |--c o--- 9090/tcp ---[ prometheus    ]
-                 [               ]  |--c o--- 3100/tcp ---[ loki          ]
+o--- 3000/tcp ---[ grafana ]-----c o--- 8086/tcp ---[ influxdb   ]
+                 [         ]-----c o--- 1883/tcp ---[ mosquitto  ]
+                 [         ]-----c o--- 9090/tcp ---[ prometheus ]
+                 [         ]-----c o--- 3100/tcp ---[ loki       ]
 
 </pre>
 
 ### TIBBER/SHELLY DATA COLLECTION:
 <pre>
-                 [ Tibber Bridge ]-----c o---  443/tcp ---[ api.tibber.com ] 
-                 [               ]  |--c o--- 1883/tcp ---[ mosquitto      ]
-                 [               ]
+                 [ tibber-bridge ]-----c o---  443/tcp ---[ api.tibber.com ] 
+                 [               ]-----c o--- 1883/tcp ---[ mosquitto      ]
 
-o--- 1883/tcp ---[ Mosquitto     ]
+o--- 1883/tcp ---[ mosquitto     ]
 
-                 [ Telegraf      ]-----c o--- 1883/tcp ---[ Mosquitto     ]
-                 [               ]  |--c o--- 8086/tcp ---[ Influxdb      ]
+                 [ telegraf      ]-----c o--- 1883/tcp ---[ mosquitto ]
+                 [               ]-----c o--- 8086/tcp ---[ influxdb  ]
 
-o--- 8086/tcp ---[ Influxdb      ]
+o--- 8086/tcp ---[ influxdb      ]
+
 </pre>
 
 ### LOG AGGREGATION:
 <pre>
-o--- 3100/tcp ---[ Loki          ]
+o--- 3100/tcp ---[ loki     ]
 
-o--- 1514/tcp ---[ Promtail      ]-----c o--- 3100/tcp ---[ Loki          ]
+o--- 1514/tcp ---[ promtail ]-----c o--- 3100/tcp ---[ loki ]
 
 </pre>
 
 ### MONITORING:
 <pre>
-o--- 9090/tcp ---[ Prometheus    ]-----c o--- 9100/tcp ---[ Node Exporter ]
+o--- 9090/tcp ---[ prometheus    ]-----c o--- 9100/tcp ---[ node-exporter ]
                  [               ]                        [ 192.168.1.x   ]
 
-o--- 9100/tcp ---[ Node Exporter ]
+o--- 9100/tcp ---[ node-exporter ]
                  [ 192.168.1.x   ]
                  [               ]
 </pre>
@@ -44,27 +44,27 @@ o--- 9100/tcp ---[ Node Exporter ]
 ### SYSTEM/OTHER:
 <pre>
 
-o----- 80/tcp ---[ Traefik       ]-----c o---  443/tcp ---[ cloudflare.com ]
+o----- 80/tcp ---[ traefik       ]-----c o---  443/tcp ---[ cloudflare.com ]
 o---- 443/tcp ---[               ]
                  [               ]
 
-o--- 8000/tcp ---[ Portainer     ]
+o--- 8000/tcp ---[ portainer     ]
 o--- 9000/tcp ---[               ]
                  [               ]
 
-o--- 1900/udp ---[ Unifi-        ]
-o--- 3478/udp ---[ Controller    ]
+o--- 1900/udp ---[ unifi-        ]
+o--- 3478/udp ---[ controller    ]
 o--- 8080/tcp ---[               ]
 o--- 8443/tcp ---[               ]
 o-- 10001/udp ---[               ]
                  [               ]
 
-o----- 53/tcp ---[ Pi-Hole       ]
-o----- 53/udp ---[               ]
+o----- 53/tcp ---[ pi-hole       ]-----c o---   53/tcp ---[ 1.1.1.1 ]
+o----- 53/udp ---[               ]-----c o---   53/udp ---[ 1.1.1.1 ]
 o----- 81/tcp ---[               ]
                  [               ]
 
-o--- 8008/tcp ---[ WebDAV        ]
+o--- 8008/tcp ---[ webdav        ]
                  [               ]
 </pre>
 
