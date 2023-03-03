@@ -1,0 +1,67 @@
+**Container & Configuraion Overview**
+
+- [homebridge]:
+    - Plugins:
+        - Homebridge UI
+        - Homebridge Shelly
+        - Homebridge Tuya Plattform
+- [influxdb]:
+    - [influxdb]:
+        - DB.RetentionPolicy: telegraf.autogen w/ Measurements:
+            - tibber_v2
+            - mqtt_consumer
+    - [telegraf]:
+        - Inputs:
+            - mqtt_consumer: shellies/*
+            - exec: tibber - getLastHourConsumptionData.sh
+            - dir-monitor: tibber - priceinfo
+            - dir-monitor: tibber - consumption
+        - Output:
+            - stdout
+            - influxdb: 
+    - [chronograf]:
+- [loki]: 
+    - [loki]: 
+    - [promtail]: w/ scrape_configs:
+        - system (var/log/*log)
+        - syslog (0.0.0.0:1514)
+        - docker (docker_sd)
+- [monitoring]:
+    - [alertmanager]:
+    - [prometheus]: w/ scrapre_configs:
+        - 192.168.1.12:9100
+        - 192.168.1.13:9100
+    - [grafana]:
+        - Data Sources:
+            - influxdb: Tibber (historical), Shelly (historical + live)
+            - mosquitto: Tibber (live)
+            - prometheus: Node Exporter
+            - loki:
+        - Dashboards (Power):
+            - Daily Power Consumption (Tibber & Shellies)
+            - Monthly Power Consumption (Tibber & Shellies)
+            - Price Info (Tibber)
+        - Dashboards (Ops):
+            - [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full)
+- [mosquitto]:
+    - (no custom config)
+- [node-exporter]:
+    - (no custom config)
+- [pihole]:
+    - (no custom config)
+- [portainer]:
+    - (no custom config)
+- [tibber-bridger]:
+    - (no custom config)
+- tibber-scripts:
+- [traefik]:
+    - (no custom config)
+- [unifi-controller]
+    - (no custom config)
+- [webdav]: 
+    - (no custom config)
+---
+- [Docker Composition]
+    - [Container]
+    -   Domain specific configuration artifact type 
+        - configuration artifact element
