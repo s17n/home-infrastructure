@@ -49,8 +49,8 @@ services:
       TIBBER_DOWNLOAD_DIR: /etc/tibber/data/data-input
     volumes:
      - './telegraf:/etc/telegraf:ro'
-     - '${TIBBER_SCRIPTS}:/etc/tibber/bin:rw'
-     - '${TIBBER_DATA}:/etc/tibber/data:rw'
+     - '${TIBBER_SCRIPTS:-$HOME/home-infrastructure/tibber-scripts}:/etc/tibber/bin:rw'
+     - '${TIBBER_DATA:-$HOME/data/tibber}:/etc/tibber/data:rw'
      - '/var/run/docker.sock:/var/run/docker.sock:ro'
      - '/sys:/rootfs/sys:ro'
      - '/proc:/rootfs/proc:ro'
