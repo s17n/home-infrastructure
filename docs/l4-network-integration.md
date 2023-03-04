@@ -1,6 +1,6 @@
-## Network Integration
+# Network Integration
 
-### DASHBOARDS: 
+## Dashboards 
 <pre>
 o--- 3000/tcp ---[ grafana ]-----c o--- 8086/tcp ---[ influxdb   ]
                  [         ]-----c o--- 1883/tcp ---[ mosquitto  ]
@@ -9,17 +9,25 @@ o--- 3000/tcp ---[ grafana ]-----c o--- 8086/tcp ---[ influxdb   ]
 
 </pre>
 
-### TIBBER/SHELLY DATA COLLECTION:
+## Tibber/Shelly Data Collection
 <pre>
                  [ tibber-bridge ]-----c o---  443/tcp ---[ api.tibber.com ] 
                  [               ]-----c o--- 1883/tcp ---[ mosquitto      ]
 
 o--- 1883/tcp ---[ mosquitto     ]
+                 [               ]  
+                 === mosquitto-data:/mosquitto/data/
+                 === ./log/        :/mosquitto/log/
 
                  [ telegraf      ]-----c o--- 1883/tcp ---[ mosquitto ]
                  [               ]-----c o--- 8086/tcp ---[ influxdb  ]
+                 [               ]
+                 === ${TIBBER_SCRIPTS}:/etc/tibber/bin
+                 === ${TIBBER_DATA}   :/etc/tibber/data
 
 o--- 8086/tcp ---[ influxdb      ]
+                 [               ]
+                 === influxdb-storage:/var/lib/influxdb
 
 </pre>
 

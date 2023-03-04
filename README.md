@@ -6,7 +6,8 @@ The main purpose of this project is to:
 
 for my home infrastructure components.
 
-Details:
+Details covered in the following sub-sections:
 
 - [Container & Configuraions Overview](docs/container-configuration-overview.md)
-- [Integration Overview](docs/integration-overview.md)
+- [Network Integration](docs/l4-network-integration.md)
+- [File System Integration](docs/file-system-integration.md)
