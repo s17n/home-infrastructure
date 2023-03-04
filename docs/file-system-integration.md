@@ -13,18 +13,27 @@ This document covers file system integration for:
 
 ## MQTT & TSDB Components
 
-- mosquitto 
+- tibber-bridge:
+    - (no file system integration)
+
+- tibber-scripts:
+
+- mosquitto:
+<pre>
     - ./log/:/mosquitto/log/
     - mosquitto-data:/mosquitto/data/
-
-- telegraf
-     - `'./telegraf:/etc/telegraf:ro'`
-     - `'${TIBBER_SCRIPTS:-$HOME/home-infrastructure/tibber-scripts}:/etc/tibber/bin:rw'`
-     - `'${TIBBER_DATA:-$HOME/data/tibber}:/etc/tibber/data:rw'`
-     - `'/var/run/docker.sock:/var/run/docker.sock:ro'`
-     - `'/sys:/rootfs/sys:ro'`
-     - `'/proc:/rootfs/proc:ro'`
-     - `'/etc:/rootfs/etc:ro'`
-
-- influxdb
-    - influxdb-storage:/var/lib/influxdb
+</pre>
+- telegraf:
+<pre>
+     - './telegraf:/etc/telegraf:ro'
+     - '${TIBBER_SCRIPTS:-$HOME/home-infrastructure/tibber-scripts}:/etc/tibber/bin:rw'
+     - '${TIBBER_DATA:-$HOME/data/tibber}:/etc/tibber/data:rw'
+     - '/var/run/docker.sock:/var/run/docker.sock:ro'
+     - '/sys:/rootfs/sys:ro'
+     - '/proc:/rootfs/proc:ro'
+     - '/etc:/rootfs/etc:ro'
+</pre>
+- influxdb:
+<pre>
+    - 'influxdb-storage:/var/lib/influxdb'
+</pre>

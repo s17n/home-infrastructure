@@ -1,6 +1,6 @@
 # Network Integration
 
-## Dashboards 
+## Monitoring Frontend
 <pre>
 o--- 3000/tcp ---[ grafana ]-----c o--- 8086/tcp ---[ influxdb   ]
                  [         ]-----c o--- 1883/tcp ---[ mosquitto  ]
@@ -9,29 +9,46 @@ o--- 3000/tcp ---[ grafana ]-----c o--- 8086/tcp ---[ influxdb   ]
 
 </pre>
 
-## Tibber/Shelly Data Collection
+## Tibber / MQTT / TSDB
 <pre>
+                 [---------------]
                  [ tibber-bridge ]-----c o---  443/tcp ---[ api.tibber.com ] 
                  [               ]-----c o--- 1883/tcp ---[ mosquitto      ]
+                 [---------------]
 
+                 [---------------]
 o--- 1883/tcp ---[ mosquitto     ]
                  [               ]  
-                 === mosquitto-data:/mosquitto/data/
-                 === ./log/        :/mosquitto/log/
+                 [---------------]
 
-                 [ telegraf      ]-----c o--- 1883/tcp ---[ mosquitto ]
-                 [               ]-----c o--- 8086/tcp ---[ influxdb  ]
-                 [               ]
-                 === ${TIBBER_SCRIPTS}:/etc/tibber/bin
-                 === ${TIBBER_DATA}   :/etc/tibber/data
+                 [----------------------------------]
+                 [ tibber-scripts                   ]-----c o---  443/tcp ---[ api.tibber.com ] 
+                 [                                  ]
+                 [----------------------------------]
+o--- cron -------[--c getTomorrowsPrices.sh         ]-----c o--- file -------[ tibber-data / data-XXX ]
+o--- system -----[--c getLastHourConsumptionData.sh ]
+                 [                                  ]
+                 [----------------------------------]
 
+                 [----------------------------------]
+                 [ telegraf                         ]-----c o--- 1883/tcp ---[ mosquitto ]
+                 [                                  ]-----c o--- 8086/tcp ---[ influxdb  ]
+                 [                                  ]
+                 [----------------------------------]
+o--- time -------[........... interval .............]-----c o--- system -----[ tibber-script / getLastHour... ]
+o--- file -------[............ events ..............]-----c o--- file -------[ tibber-data / data-XXX ]
+                 [                                  ]
+                 [----------------------------------]
+
+
+                 [---------------]
 o--- 8086/tcp ---[ influxdb      ]
                  [               ]
-                 === influxdb-storage:/var/lib/influxdb
+                 [---------------]
 
 </pre>
 
-### LOG AGGREGATION:
+### Log Aggregation
 <pre>
 o--- 3100/tcp ---[ loki     ]
 
@@ -39,7 +56,7 @@ o--- 1514/tcp ---[ promtail ]-----c o--- 3100/tcp ---[ loki ]
 
 </pre>
 
-### MONITORING:
+### Monitoring Backend
 <pre>
 o--- 9090/tcp ---[ prometheus    ]-----c o--- 9100/tcp ---[ node-exporter ]
                  [               ]                        [ 192.168.1.x   ]
@@ -49,7 +66,7 @@ o--- 9100/tcp ---[ node-exporter ]
                  [               ]
 </pre>
 
-### SYSTEM/OTHER:
+### Systems / Other
 <pre>
 
 o----- 80/tcp ---[ traefik       ]-----c o---  443/tcp ---[ cloudflare.com ]
@@ -76,4 +93,3 @@ o--- 8008/tcp ---[ webdav        ]
                  [               ]
 </pre>
 
-## File System Integration
