@@ -1,7 +1,7 @@
 version: '3'
 services:
-  logging:
-    image: grafana/loki:2.4.0
+  loki:
+    image: grafana/loki:$LOKI_VERSION
     container_name: loki    
     ports:
       - 3100:3100
@@ -13,7 +13,7 @@ services:
       - extern
       
   promtail:
-    image: grafana/promtail:latest
+    image: grafana/promtail:$PROMTAIL_VERSION
     container_name: promtail    
     ports:
       - 1514:1514

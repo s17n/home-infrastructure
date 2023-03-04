@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   node-exporter:
-    image: quay.io/prometheus/node-exporter:latest
+    image: prom/node-exporter:$NODE_EXPORTER_VERSION
     container_name: node-exporter
     command:
       - '--path.rootfs=/host'

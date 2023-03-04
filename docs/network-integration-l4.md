@@ -1,6 +1,6 @@
 # Network Integration
 
-## Monitoring Frontend
+## Grafana
 <pre>
                  [------------------]
 o--- 3000/tcp ---[ grafana          ]-----c o--- 8086/tcp ---[ influxdb   ]
@@ -55,7 +55,7 @@ o--- 1514/tcp ---[ promtail         ]-----c o--- 3100/tcp ---[ loki ]
  
 </pre>
 
-### Monitoring Backend
+### Monitoring
 <pre>
                  [------------------]
 o--- 9090/tcp ---[ prometheus       ]-----c o--- 9100/tcp ---[ node-exporter ]

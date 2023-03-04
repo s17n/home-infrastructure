@@ -1,21 +1,9 @@
 version: '3'
 
 services:
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    restart: unless-stopped
-    networks: 
-      - extern
-    ports:
-      - 9090:9090
-    volumes:
-      - './prometheus:/etc/prometheus'
-      - prometheus-data:/prometheus
-    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:$GRAFANA_VERSION
     container_name: grafana    
     restart: unless-stopped
     networks: 
@@ -30,14 +18,27 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=extern"
       - "traefik.http.routers.grafana.entrypoints=https"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${HI_DOMAIN_NAME}`)"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN_NAME}`)"
       - "traefik.http.routers.grafana.tls=true"
       - "traefik.http.routers.grafana.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.grafana.loadbalancer.server.scheme=http"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
 
+  prometheus:
+    image: prom/prometheus:$PROMETHEUS_VERSION
+    container_name: prometheus
+    restart: unless-stopped
+    networks: 
+      - extern
+    ports:
+      - 9090:9090
+    volumes:
+      - './prometheus:/etc/prometheus'
+      - prometheus-data:/prometheus
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+
   alertmanager:
-    image: prom/alertmanager:latest
+    image: prom/alertmanager:$ALERTMANAGER_VESRION
     container_name: alertmanager    
     restart: unless-stopped
     ports:
@@ -48,10 +49,10 @@ services:
     command: --config.file=/config/alertmanager.yml --log.level=debug 
 
 volumes:
-  prometheus-data:
   grafana-data:
+  prometheus-data:
   alertmanager-data:
-
+  
 networks:
   extern:
     external: true

@@ -3,7 +3,7 @@ version: "3"
 services:
   pihole:
     container_name: pihole
-    image: pihole/pihole:latest
+    image: pihole/pihole:$PIHOLE_VERSION
     restart: unless-stopped
     networks: 
       - extern
