@@ -8,6 +8,7 @@ for my home infrastructure components.
 
 Details covered in the following sub-sections:
 
-- [Container & Configuraions Overview](docs/container-configuration-overview.md)
-- [Network Integration](docs/l4-network-integration.md)
+- [Container & Configurations Overview](docs/container-configuration-overview.md)
+- [Application Integration](docs/application-integration.md)
+- [Network Integration](docs/network-integration-l4.md)
 - [File System Integration](docs/file-system-integration.md)
