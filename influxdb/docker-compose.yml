@@ -11,6 +11,7 @@ services:
       - '8088:8088'
     volumes:
       - influxdb-storage:/var/lib/influxdb
+      - '${INFLUXDB_BACKUP_DIR:-$HOME/backups/local/influxdb-app}:/backup-dst:rw'
     environment:
       - INFLUXDB_DB=db0
       - INFLUXDB_ADMIN_USER=${INFLUXDB_ADMIN_USER}
