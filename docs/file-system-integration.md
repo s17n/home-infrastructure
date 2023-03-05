@@ -1,15 +1,19 @@
 # File System Integration
 
 This document covers file system integration for:
-- Configuration files                       <- no need for system backup (it's in git)  
-- Directories for application integration   <- no need for system backp
+- Configuration files                         
+- Directories for application integration   
 - Application state                         <- needs system backup
 - Other (e.g. log data)                     <- needs attention
 
-## Top Level Components 
+## Grafana 
 
 - grafana
-    - ...
+<pre>
+    - './grafana/provisioning/datasources:/etc/grafana/provisioning/datasources'
+    - './grafana/grafana.ini:/etc/grafana/grafana.ini'
+    - grafana-data:/var/lib/grafana
+</pre>
 
 ## MQTT & TSDB Components
 

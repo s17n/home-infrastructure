@@ -11,6 +11,24 @@ o--- 3000/tcp ---[ grafana          ]-----c o--- 8086/tcp ---[ influxdb   ]
 
 </pre>
 
+## Smart Home 
+<pre>
+                 [------------------]
+o--- 8581/tcp ---[ homebridge       ]
+o--- ..../... ---[                  ]
+                 [                  ]
+                 [------------------]
+
+</pre>
+
+## Devonthink 
+<pre>
+                 [------------------]
+o--- 8008/tcp ---[ webdav           ]
+                 [                  ]
+                 [------------------]
+</pre>
+
 ## Tibber / MQTT / TSDB
 <pre>
                  [------------------]
@@ -41,7 +59,7 @@ o--- 8086/tcp ---[ influxdb         ]
 
 </pre>
 
-### Log Aggregation
+## Log Aggregation
 <pre>
                  [------------------]
 o--- 3100/tcp ---[ loki             ]
@@ -55,7 +73,7 @@ o--- 1514/tcp ---[ promtail         ]-----c o--- 3100/tcp ---[ loki ]
  
 </pre>
 
-### Monitoring
+## Monitoring
 <pre>
                  [------------------]
 o--- 9090/tcp ---[ prometheus       ]-----c o--- 9100/tcp ---[ node-exporter ]
@@ -69,40 +87,47 @@ o--- 9100/tcp ---[ node-exporter    ]
                  [------------------]
 </pre>
 
-### Systems / Other
+## Network Operations
+
 <pre>
+                 [-------------------------]
+o----- 80/tcp ---[ traefik                 ]
+o---- 443/tcp ---[---                      ]
+                 [  |-- grafana.DN --------]-----c o--- 3000/tcp ---[ grafana          ] 
+                 [  |-- devonthink.DN -----]-----c o--- 8008/tcp ---[ webdav           ]
+                 [  |-- homebridge.DN -----]-----c o--- 8581/tcp ---[ homebridge       ]
+                 [  |-- portainer.DN ------]-----c o--- 9000/tcp ---[ portainer        ]
+                 [  |-- traefik.DN --------]-----c o--- 8080/tcp ---[ traefik          ]
+                 [  |-- pihole.DN ---------]-----c o---   81/tcp ---[ pihole           ]
+                 [  |-- unifi.DN ----------]-----c o--- 8443/tcp ---[ unifi-controller ]
+                 [                         ]
+                 [                         ]-----c o---  443/tcp ---[ cloudflare.com   ]
+                 [-------------------------]
 
-                 [------------------]
-o----- 80/tcp ---[ traefik          ]-----c o---  443/tcp ---[ cloudflare.com ]
-o---- 443/tcp ---[                  ]
-                 [                  ]
-                 [------------------]
+                 [-------------------------]
+o----- 53/tcp ---[ pi-hole                 ]-----c o---   53/tcp ---[ 1.1.1.1 ]
+o----- 53/udp ---[                         ]-----c o---   53/udp ---[ 1.1.1.1 ]
+o----- 81/tcp ---[                         ]
+                 [                         ]
+                 [-------------------------]
 
+                 [-------------------------]
+o--- 1900/udp ---[ unifi-controller        ]
+o--- 3478/udp ---[                         ]
+o--- 8080/tcp ---[                         ]
+o--- 8443/tcp ---[                         ]
+o-- 10001/udp ---[                         ]
+                 [                         ]
+                 [-------------------------]
+</pre>
+
+## System Operations
+<pre>
                  [------------------]
 o--- 8000/tcp ---[ portainer        ]
 o--- 9000/tcp ---[                  ]
                  [                  ]
                  [------------------]
 
-                 [------------------]
-o--- 1900/udp ---[ unifi-           ]
-o--- 3478/udp ---[ controller       ]
-o--- 8080/tcp ---[                  ]
-o--- 8443/tcp ---[                  ]
-o-- 10001/udp ---[                  ]
-                 [                  ]
-                 [------------------]
-
-                 [------------------]
-o----- 53/tcp ---[ pi-hole          ]-----c o---   53/tcp ---[ 1.1.1.1 ]
-o----- 53/udp ---[                  ]-----c o---   53/udp ---[ 1.1.1.1 ]
-o----- 81/tcp ---[                  ]
-                 [                  ]
-                 [------------------]
-
-                 [------------------]
-o--- 8008/tcp ---[ webdav           ]
-                 [                  ]
-                 [------------------]
 </pre>
 
