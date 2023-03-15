@@ -2,3 +2,4 @@
 **/__**
 **/.env
 **/log
+influxdb2/config/influx-configs
