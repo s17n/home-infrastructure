@@ -6,11 +6,11 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      - '${HI_DATA}/homebridge:/homebridge'
+      - './data:/homebridge'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homebridge.entrypoints=https"
-      - "traefik.http.routers.homebridge.rule=Host(`homebridge.${HI_DOMAIN_NAME}`)"
+      - "traefik.http.routers.homebridge.rule=Host(`homebridge.${DOMAIN_NAME}`)"
       - "traefik.http.routers.homebridge.tls=true"
       - "traefik.http.routers.homebridge.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.homebridge.loadbalancer.server.port=8581"

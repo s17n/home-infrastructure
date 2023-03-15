@@ -1,5 +1,6 @@
 .DS_Store
-**/__**
-**/.env
-**/log
-influxdb2/config/influx-configs
+*/__**
+*/.env
+*/log
+*/config/*
+*/data/*

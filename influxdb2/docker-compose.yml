@@ -20,7 +20,6 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=$DOCKER_INFLUXDB_INIT_ORG
       - DOCKER_INFLUXDB_INIT_BUCKET=$DOCKER_INFLUXDB_INIT_BUCKET
       - DOCKER_INFLUXDB_INIT_RETENTION=$DOCKER_INFLUXDB_INIT_RETENTION
-      - INFLUXDB_DEFAULT_TOKEN=${INFLUXDB_DEFAULT_TOKEN}
   telegraf:
     image: telegraf:${TELEGRAF_VERSION}
     container_name: telegraf
@@ -34,14 +33,14 @@ services:
        HOST_PROC: /rootfs/proc
        HOST_SYS: /rootfs/sys
        HOST_ETC: /rootfs/etc
-       INFLUXDB_API_TOKEN: ${INFLUXDB_API_TOKEN}
-       INFLUXDB_ORGANIZATION: ${INFLUXDB_ORGANIZATION}
+       INFLUXDB_API_TOKEN: ${TELEGRAF_INFLUXDB_API_TOKEN}
+       INFLUXDB_ORGANIZATION: ${TELEGRAF_INFLUXDB_ORGANIZATION}
        TIBBER_ACCESS_TOKEN: ${TIBBER_ACCESS_TOKEN}
        TIBBER_DOWNLOAD_DIR: /etc/tibber/data/data-input
     volumes:
      - './telegraf:/etc/telegraf:ro'
-     - '${TIBBER_SCRIPTS:-$HOME/home-infrastructure/tibber-scripts}:/etc/tibber/bin:rw'
-     - '${TIBBER_DATA:-$HOME/data/tibber}:/etc/tibber/data:rw'
+     - '${TIBBER_SCRIPTS}:/etc/tibber/bin:rw'
+     - '${TIBBER_DATA}:/etc/tibber/data:rw'
      - '/var/run/docker.sock:/var/run/docker.sock:ro'
      - '/sys:/rootfs/sys:ro'
      - '/proc:/rootfs/proc:ro'
