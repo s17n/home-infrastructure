@@ -5,7 +5,8 @@ services:
     container_name: webdav
     restart: "unless-stopped"
     networks: 
-      - extern
+      - default
+      - reverse-proxy
     ports:
       - "8008:80"
     environment:
@@ -15,6 +16,7 @@ services:
       - '${HI_DATA}/webdav/dav:/var/lib/dav'
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=reverse-proxy"
       - "traefik.http.routers.devonthink.entrypoints=https"
       - "traefik.http.routers.devonthink.rule=Host(`devonthink.{HI_DOMAIN_NAME}}`)"
       - "traefik.http.routers.devonthink.tls=true"
@@ -23,5 +25,7 @@ services:
       - "traefik.http.services.devonthink.loadbalancer.server.port=80"
  
 networks:
-  extern:
+  default:
+    driver: bridge
+  reverse-proxy:
     external: true

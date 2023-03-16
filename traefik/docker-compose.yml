@@ -5,7 +5,7 @@ services:
     container_name: traefik
     restart: unless-stopped
     networks:
-      - extern
+      - reverse-proxy
     ports:
       - 80:80
       - 443:443
@@ -40,5 +40,5 @@ services:
       - CF_API_KEY=$CLOUDFLARE_API_KEY
 
 networks:
-  extern:
+  reverse-proxy:
     external: true

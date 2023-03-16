@@ -6,7 +6,7 @@ services:
     container_name: influxdb2
     restart: unless-stopped
     networks:
-      - extern
+      - default
     ports:
       - '8086:8086'
     volumes:
@@ -25,7 +25,7 @@ services:
     container_name: telegraf
     restart: unless-stopped
     networks:
-      - extern
+      - default
     ports:
       - '57100:57100'
       - '57500:57500'
@@ -51,5 +51,5 @@ volumes:
   influxdb2-storage:
 
 networks:
-  extern:
-    external: true
+  default:
+    driver: bridge

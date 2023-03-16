@@ -5,7 +5,8 @@ services:
     container_name: unifi-controller
     restart: unless-stopped
     networks:
-      - extern
+      - default
+      - reverse-proxy
     environment:
       - PUID=1000
       - PGID=1000
@@ -25,6 +26,7 @@ services:
 #      - 5514:5514        # optional, Remote syslog port
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=reverse-proxy"
       - "traefik.http.routers.unifi.entrypoints=https"
       - "traefik.http.routers.unifi.rule=Host(`unifi.${DOMAIN_NAME}`)"
       - "traefik.http.routers.unifi.tls=true"
@@ -35,5 +37,7 @@ services:
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
 
 networks:
-  extern:
+  default:
+    driver: bridge
+  reverse-proxy:
     external: true

@@ -10,7 +10,7 @@ services:
       - './loki-volumes:/etc/loki'
     command: -config.file=/mnt/config/loki-config.yml
     networks:
-      - extern
+      - default
       
   promtail:
     image: grafana/promtail:$PROMTAIL_VERSION
@@ -23,8 +23,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/mnt/config/promtail-config.yml
     networks:
-      - extern
-
-networks:
-  extern:
-    external: true
+      - default

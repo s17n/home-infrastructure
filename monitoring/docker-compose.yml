@@ -7,7 +7,8 @@ services:
     container_name: grafana    
     restart: unless-stopped
     networks: 
-      - extern
+      - default
+      - reverse-proxy
     ports:
       - 3000:3000
     volumes:
@@ -16,7 +17,7 @@ services:
       - grafana-data:/var/lib/grafana
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=extern"
+      - "traefik.docker.network=reverse-proxy"
       - "traefik.http.routers.grafana.entrypoints=https"
       - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN_NAME}`)"
       - "traefik.http.routers.grafana.tls=true"
@@ -29,7 +30,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     networks: 
-      - extern
+      - default
     ports:
       - 9090:9090
     volumes:
@@ -52,7 +53,9 @@ volumes:
   grafana-data:
   prometheus-data:
   alertmanager-data:
-  
+
 networks:
-  extern:
+  default:
+    driver: bridge
+  reverse-proxy:
     external: true
