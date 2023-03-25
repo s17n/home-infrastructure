@@ -1,12 +1,12 @@
 version: "3"
 
 services:
-  adguardhome:
-    container_name: adguardhome
+  adguard:
+    container_name: adguard
     image: adguard/adguardhome:$ADGUARDHOME_VERSION
     restart: unless-stopped
     networks: 
-      - default
+      - adguard
       - reverse-proxy
     ports:
       - "53:53/tcp"
@@ -16,6 +16,9 @@ services:
     volumes:
       - ./config:/opt/adguardhome/conf:rw
       - adguardhome-data:/opt/adguardhome/work
+    environment:
+      - ADGUARDHOME_ADMIN_USERNAME=${ADGUARDHOME_ADMIN_USERNAME}
+      - ADGUARDHOME_ADMIN_PASSWORD_HASHED=${ADGUARDHOME_ADMIN_PASSWORD_HASHED}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=reverse-proxy"
@@ -30,11 +33,38 @@ services:
         loki-url: $LOKI_URL
         no-file: "true"
 
+  adguard-exporter:
+    container_name: adguard-exporter
+    image: ebrianne/adguard-exporter:latest
+    restart: unless-stopped
+    networks: 
+      - adguard
+      - monitoring
+    ports:
+      - "9617:9617"
+    environment:
+      - adguard_protocol=http
+      - adguard_hostname=adguard
+      - adguard_username=${ADGUARDHOME_ADMIN_USERNAME}
+      - adguard_password=${ADGUARDHOME_ADMIN_PASSWORD}
+      - adguard_port= #optional
+      - server_port=9617
+      - interval=30s
+      - log_limit=10000
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+
 volumes:
   adguardhome-data:
 
 networks:
-  default:
+  adguard:
+    name: adguard
     driver: bridge
+  monitoring:
+    external: true
   reverse-proxy:
     external: true
