@@ -1,7 +1,7 @@
 version: "3"
 services:
   unifi-controller:
-    image: lscr.io/linuxserver/unifi-controller:${UNIFI_CONTROLLER_TAG}
+    image: lscr.io/linuxserver/unifi-controller:${UNIFI_CONTROLLER_VERSION}
     container_name: unifi-controller
     restart: unless-stopped
     networks:
@@ -35,6 +35,11 @@ services:
       - "traefik.http.services.unifi.loadbalancer.server.port=8443"
       - "traefik.http.routers.unifi.middlewares=unifiHeaders@file"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
 
 networks:
   default:

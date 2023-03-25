@@ -7,3 +7,8 @@ services:
     environment:
       - TIBBER_API_TOKEN=${TIBBER_API_TOKEN} 
       - TIBBER_MQTT_BROKER=${TIBBER_MQTT_BROKER}
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"

@@ -15,10 +15,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/traefik.yml:/traefik.yml:ro
       - ./config/fileprovider:/fileprovider:ro
-      - ./config/.htpasswd:/.htpasswd:ro
       - ./config/acme/acme.json:/acme.json
-      - ./config/log/traefik.log:/traefik.log
-      - ./config/log/access.log:/access.log
+      - ./config/.htpasswd:/.htpasswd:ro
     labels:
       - "traefik.enable=true"
       # HTTP-to-HTTPS Redirect
@@ -33,12 +31,17 @@ services:
       - "traefik.http.routers.traefik.tls.certResolver=dns-cloudflare"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=middlewares-basic-auth@file"
-
     environment:
       - TZ="Europe/Berlin"
       - CF_API_EMAIL=$CLOUDFLARE_EMAIL
       - CF_API_KEY=$CLOUDFLARE_API_KEY
-
+      - DOMAIN_NAME=$DOMAIN_NAME
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+        
 networks:
   reverse-proxy:
     external: true

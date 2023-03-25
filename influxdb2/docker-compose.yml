@@ -20,6 +20,11 @@ services:
       - DOCKER_INFLUXDB_INIT_ORG=$DOCKER_INFLUXDB_INIT_ORG
       - DOCKER_INFLUXDB_INIT_BUCKET=$DOCKER_INFLUXDB_INIT_BUCKET
       - DOCKER_INFLUXDB_INIT_RETENTION=$DOCKER_INFLUXDB_INIT_RETENTION
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
   telegraf:
     image: telegraf:${TELEGRAF_VERSION}
     container_name: telegraf
@@ -46,6 +51,11 @@ services:
      - '/proc:/rootfs/proc:ro'
      - '/etc:/rootfs/etc:ro'
     command: --config-directory /etc/telegraf/telegraf.d
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
 
 volumes:
   influxdb2-storage:

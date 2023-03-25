@@ -10,3 +10,8 @@ services:
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"

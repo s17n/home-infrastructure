@@ -15,3 +15,8 @@ services:
       - "traefik.http.routers.homebridge.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.homebridge.loadbalancer.server.port=8581"
       - "docker.group=homebridge"
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"

@@ -1,29 +1,34 @@
 version: '3'
 services:
   webdav:
-    image: s17n/webdav:1.0
+    image: s17n/webdav:$WEBDAV_VERSION
     container_name: webdav
     restart: "unless-stopped"
     networks: 
       - default
       - reverse-proxy
     ports:
-      - "8008:80"
+      - "8008:80" 
     environment:
       AUTH_TYPE: Digest
     volumes:
-      - '${HI_DATA}/webdav/user.passwd:/user.passwd'
-      - '${HI_DATA}/webdav/dav:/var/lib/dav'
+      - './data/user.passwd:/user.passwd'
+      - './data/dav:/var/lib/dav'
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=reverse-proxy"
       - "traefik.http.routers.devonthink.entrypoints=https"
-      - "traefik.http.routers.devonthink.rule=Host(`devonthink.{HI_DOMAIN_NAME}}`)"
+      - "traefik.http.routers.devonthink.rule=Host(`devonthink.{DOMAIN_NAME}}`)"
       - "traefik.http.routers.devonthink.tls=true"
       - "traefik.http.routers.devonthink.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.devonthink.loadbalancer.server.scheme=http"
       - "traefik.http.services.devonthink.loadbalancer.server.port=80"
- 
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+
 networks:
   default:
     driver: bridge

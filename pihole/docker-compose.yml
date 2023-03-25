@@ -26,13 +26,36 @@ services:
       - "traefik.http.routers.pihole.tls=true"
       - "traefik.http.routers.pihole.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.pihole.loadbalancer.server.port=80"
-    # Recommended but not required (DHCP needs NET_ADMIN)
-    #   https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
-    #cap_add:
-    #  - NET_ADMIN
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+
+  pihole-exporter:
+    container_name: pihole-exporter
+    image: ekofr/pihole-exporter:latest
+    restart: unless-stopped
+    networks: 
+      - default
+      - monitoring
+    ports:
+      - "9617:9617/tcp"
+    environment:
+      PIHOLE_HOSTNAME: pihole
+      PIHOLE_PASSWORD: ${PIHOLE_WEBPASSWORD}
+      INTERVAL: 30s
+      PORT: 9617
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
 
 networks:
   default:
     driver: bridge
   reverse-proxy:
+    external: true
+  monitoring:
     external: true
