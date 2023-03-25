@@ -5,7 +5,7 @@ services:
     container_name: unifi-controller
     restart: unless-stopped
     networks:
-      - default
+      - unifi-controller
       - reverse-proxy
     environment:
       - PUID=1000
@@ -41,8 +41,28 @@ services:
         loki-url: $LOKI_URL
         no-file: "true"
 
+  unpoller:
+    image: ghcr.io/unpoller/unpoller:latest
+    container_name: unpoller
+    restart: unless-stopped
+    ports:
+      - '9130:9130'
+    networks:
+      - unifi-controller
+      - monitoring
+    volumes:
+      - ./config-up/up.conf:/etc/unpoller/up.conf
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+      
 networks:
-  default:
+  unifi-controller:
+    name: unifi-controller
     driver: bridge
+  monitoring:
+    external: true
   reverse-proxy:
     external: true
