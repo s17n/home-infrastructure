@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  adguardhome:
+    container_name: adguardhome
+    image: adguard/adguardhome:$ADGUARDHOME_VERSION
+    restart: unless-stopped
+    networks: 
+      - default
+      - reverse-proxy
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "82:80/tcp"
+#      - "3030:3000/tcp"
+    volumes:
+      - ./config:/opt/adguardhome/conf:rw
+      - adguardhome-data:/opt/adguardhome/work
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=reverse-proxy"
+      - "traefik.http.routers.adguardhome.entrypoints=https"
+      - "traefik.http.routers.adguardhome.rule=Host(`adguard.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.adguardhome.tls=true"
+      - "traefik.http.routers.adguardhome.tls.certresolver=dns-cloudflare"
+      - "traefik.http.services.adguardhome.loadbalancer.server.port=80"
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
+
+volumes:
+  adguardhome-data:
+
+networks:
+  default:
+    driver: bridge
+  reverse-proxy:
+    external: true
