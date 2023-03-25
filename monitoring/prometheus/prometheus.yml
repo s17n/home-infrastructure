@@ -12,12 +12,16 @@ rule_files:
 #        - targets: [ 'alertmanager:9093' ]
 
 scrape_configs:
-  - job_name: services
+  - job_name: node
     metrics_path: /metrics
     static_configs:
       - targets:
           - '192.168.1.12:9100' 
-#          - '192.168.1.13:9100'
-#  - job_name: 'pihole'
-#    static_configs:
-#      - targets: ['pihole-exporter:9617']
+  - job_name: 'adguard'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['adguard-exporter:9617']
+  - job_name: 'unifi'
+    scrape_interval: 30s
+    static_configs:
+    - targets: ['unpoller:9130']
