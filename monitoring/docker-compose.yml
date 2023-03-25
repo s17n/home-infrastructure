@@ -1,42 +1,23 @@
 version: '3'
 
 services:
-
-  grafana:
-    image: grafana/grafana:$GRAFANA_VERSION
-    container_name: grafana    
-    restart: unless-stopped
-    networks: 
-      - default
-      - reverse-proxy
-    ports:
-      - 3000:3000
-    volumes:
-      - './grafana/provisioning/datasources:/etc/grafana/provisioning/datasources'
-      - './grafana/grafana.ini:/etc/grafana/grafana.ini'
-      - grafana-data:/var/lib/grafana
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=reverse-proxy"
-      - "traefik.http.routers.grafana.entrypoints=https"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.grafana.tls=true"
-      - "traefik.http.routers.grafana.tls.certresolver=dns-cloudflare"
-      - "traefik.http.services.grafana.loadbalancer.server.scheme=http"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-
   prometheus:
     image: prom/prometheus:$PROMETHEUS_VERSION
     container_name: prometheus
     restart: unless-stopped
     networks: 
-      - default
+      - monitoring
     ports:
       - 9090:9090
     volumes:
       - './prometheus:/etc/prometheus'
       - prometheus-data:/prometheus
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
 
   alertmanager:
     image: prom/alertmanager:$ALERTMANAGER_VESRION
@@ -48,14 +29,16 @@ services:
       - "./alertmanager:/config"
       - alertmanager-data:/data
     command: --config.file=/config/alertmanager.yml --log.level=debug 
+    logging:
+      driver: loki
+      options:
+        loki-url: $LOKI_URL
+        no-file: "true"
 
 volumes:
-  grafana-data:
   prometheus-data:
   alertmanager-data:
 
 networks:
-  default:
-    driver: bridge
-  reverse-proxy:
+  monitoring:
     external: true
