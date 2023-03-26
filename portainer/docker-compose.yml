@@ -5,7 +5,7 @@ services:
     container_name: portainer
     restart: unless-stopped
     networks: 
-      - default
+      - portainer
       - reverse-proxy
     ports:
       - 9000:9000
@@ -31,7 +31,8 @@ volumes:
   portainer_data:
 
 networks:
-  default:
+  portainer:
+    name: portainer
     driver: bridge
   reverse-proxy:
     external: true

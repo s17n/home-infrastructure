@@ -4,6 +4,8 @@ services:
     image: s17n/tibber-bridge:latest
     container_name: tibber-bridge
     restart: unless-stopped
+    networks:
+      - tibber-bridge
     environment:
       - TIBBER_API_TOKEN=${TIBBER_API_TOKEN} 
       - TIBBER_MQTT_BROKER=${TIBBER_MQTT_BROKER}
@@ -12,3 +14,8 @@ services:
       options:
         loki-url: $LOKI_URL
         no-file: "true"
+
+networks:
+  tibber-bridge:
+    name: tibber-bridge
+    driver: bridge

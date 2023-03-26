@@ -4,6 +4,8 @@ services:
     image: eclipse-mosquitto:$MOSQUITTO_VERSION
     container_name: mosquitto
     restart: unless-stopped
+    networks:
+      - mosquitto
     volumes:
       - ./config/:/mosquitto/config/:ro
       - ./log/:/mosquitto/log/
@@ -19,3 +21,8 @@ services:
 
 volumes:
   mosquitto-data: 
+
+networks:
+  mosquitto:
+    name: mosquitto
+    driver: bridge

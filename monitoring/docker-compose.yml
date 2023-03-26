@@ -5,7 +5,7 @@ services:
     image: prom/prometheus:$PROMETHEUS_VERSION
     container_name: prometheus
     restart: unless-stopped
-    networks: 
+    networks:
       - monitoring
     ports:
       - 9090:9090
@@ -23,6 +23,8 @@ services:
     image: prom/alertmanager:$ALERTMANAGER_VESRION
     container_name: alertmanager    
     restart: unless-stopped
+    networks:
+      - monitoring
     ports:
       - 9093:9093
     volumes:

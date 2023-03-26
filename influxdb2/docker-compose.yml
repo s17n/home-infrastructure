@@ -6,7 +6,7 @@ services:
     container_name: influxdb2
     restart: unless-stopped
     networks:
-      - default
+      - influxdb2
     ports:
       - '8086:8086'
     volumes:
@@ -25,12 +25,13 @@ services:
       options:
         loki-url: $LOKI_URL
         no-file: "true"
+
   telegraf:
     image: telegraf:${TELEGRAF_VERSION}
     container_name: telegraf
     restart: unless-stopped
     networks:
-      - default
+      - influxdb2
     ports:
       - '57100:57100'
       - '57500:57500'
@@ -61,5 +62,6 @@ volumes:
   influxdb2-storage:
 
 networks:
-  default:
+  influxdb2:
+    name: influxdb2
     driver: bridge

@@ -6,7 +6,7 @@ services:
     container_name: grafana    
     restart: unless-stopped
     networks: 
-      - default
+      - grafana
       - reverse-proxy
     ports:
       - 3000:3000
@@ -33,7 +33,8 @@ volumes:
   grafana-data:
 
 networks:
-  default:
+  grafana:
+    name: grafana
     driver: bridge
   reverse-proxy:
     external: true
