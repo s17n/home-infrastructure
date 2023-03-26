@@ -25,3 +25,11 @@ scrape_configs:
     scrape_interval: 30s
     static_configs:
     - targets: ['unpoller:9130']
+  - job_name: 'loki'
+    scrape_interval: 30s
+    static_configs:
+    - targets: ['loki:3100']
+  - job_name: 'promtail'
+    scrape_interval: 30s
+    static_configs:
+    - targets: ['promtail:9080']
