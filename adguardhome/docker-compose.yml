@@ -16,9 +16,6 @@ services:
     volumes:
       - ./config:/opt/adguardhome/conf:rw
       - adguardhome-data:/opt/adguardhome/work
-    environment:
-      - ADGUARDHOME_ADMIN_USERNAME=${ADGUARDHOME_ADMIN_USERNAME}
-      - ADGUARDHOME_ADMIN_PASSWORD_HASHED=${ADGUARDHOME_ADMIN_PASSWORD_HASHED}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=reverse-proxy"
