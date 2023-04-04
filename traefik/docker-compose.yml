@@ -15,8 +15,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/traefik.yml:/traefik.yml:ro
       - ./config/fileprovider:/fileprovider:ro
-      - ./config/acme/acme.json:/acme.json
-      - ./config/.htpasswd:/.htpasswd:ro
+      - ./secrets/acme.json:/acme.json
+      - ./secrets/.htpasswd:/.htpasswd:ro
     labels:
       - "traefik.enable=true"
       # HTTP-to-HTTPS Redirect

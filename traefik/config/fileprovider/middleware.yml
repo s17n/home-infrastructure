@@ -1,0 +1,42 @@
+##START
+http:
+  middlewares:
+    middlewares-basic-auth:
+      basicAuth: 
+        usersFile: "/.htpasswd"
+
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        
+    unifiHeaders:
+      headers:
+        customRequestHeaders:
+          Authorization: "" # Removes
+
+    default-headers:
+      headers:
+        CustomFrameOptionsValue: "SAMEORIGIN"
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsSeconds: 315360000
+        stsIncludeSubdomains: true
+        stsPreload: true
+
+    matomo-headers:
+      headers:
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsSeconds: 315360000
+        stsIncludeSubdomains: true
+        stsPreload: true
+              
+tls:
+  options:
+    myTLSOptions:
+       minVersion: VersionTLS12
+##EOF

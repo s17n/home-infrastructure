@@ -1,0 +1,6 @@
+http:
+  services:
+    diskstation-service:
+      loadBalancer:
+        servers:
+          - url: "http://diskstation.local:8080"
