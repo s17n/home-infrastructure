@@ -13,7 +13,7 @@ services:
       - TZ=Europe/Berlin
       - MEM_LIMIT=1024 #optional
     volumes:
-      - './config:/config'
+      - './data:/config'
     ports:
       - 3478:3478/udp    # Unifi STUN port
       - 10001:10001/udp  # Required for AP discovery
@@ -51,7 +51,7 @@ services:
       - unifi-controller
       - monitoring
     volumes:
-      - ./config-up/up.conf:/etc/unpoller/up.conf
+      - ./config-unpoller/up.conf:/etc/unpoller/up.conf
     logging:
       driver: loki
       options:
