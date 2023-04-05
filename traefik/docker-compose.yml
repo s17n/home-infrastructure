@@ -1,7 +1,7 @@
 version: '3'
 services:
   traefik:
-    image: traefik:v2.9.6
+    image: traefik:${TRAEFIK_VERSION}
     container_name: traefik
     restart: unless-stopped
     networks:
@@ -31,11 +31,9 @@ services:
       - "traefik.http.routers.traefik.tls.certResolver=dns-cloudflare"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=middlewares-basic-auth@file"
-    environment:
-      - TZ="Europe/Berlin"
-      - CF_API_EMAIL=$CLOUDFLARE_EMAIL
-      - CF_API_KEY=$CLOUDFLARE_API_KEY
-      - DOMAIN_NAME=$DOMAIN_NAME
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:

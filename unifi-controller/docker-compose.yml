@@ -35,6 +35,9 @@ services:
       - "traefik.http.services.unifi.loadbalancer.server.port=8443"
       - "traefik.http.routers.unifi.middlewares=unifiHeaders@file"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:
@@ -52,6 +55,9 @@ services:
       - monitoring
     volumes:
       - ./config-unpoller/up.conf:/etc/unpoller/up.conf
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:

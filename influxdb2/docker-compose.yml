@@ -13,13 +13,9 @@ services:
       - influxdb2-storage:/var/lib/influxdb2
       - ./config:/etc/influxdb2:rw
       - '${INFLUXDB_BACKUP_DIR}:/backup:rw'
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=$DOCKER_INFLUXDB_INIT_MODE
-      - DOCKER_INFLUXDB_INIT_USERNAME=$DOCKER_INFLUXDB_INIT_USERNAME
-      - DOCKER_INFLUXDB_INIT_PASSWORD=$DOCKER_INFLUXDB_INIT_PASSWORD
-      - DOCKER_INFLUXDB_INIT_ORG=$DOCKER_INFLUXDB_INIT_ORG
-      - DOCKER_INFLUXDB_INIT_BUCKET=$DOCKER_INFLUXDB_INIT_BUCKET
-      - DOCKER_INFLUXDB_INIT_RETENTION=$DOCKER_INFLUXDB_INIT_RETENTION
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:
@@ -35,14 +31,9 @@ services:
     ports:
       - '57100:57100'
       - '57500:57500'
-    environment:
-       HOST_PROC: /rootfs/proc
-       HOST_SYS: /rootfs/sys
-       HOST_ETC: /rootfs/etc
-       INFLUXDB_API_TOKEN: ${TELEGRAF_INFLUXDB_API_TOKEN}
-       INFLUXDB_ORGANIZATION: ${TELEGRAF_INFLUXDB_ORGANIZATION}
-       TIBBER_ACCESS_TOKEN: ${TIBBER_ACCESS_TOKEN}
-       TIBBER_DOWNLOAD_DIR: /etc/tibber/data/data-input
+    env_file:
+      - .env
+      - .secrets.env
     volumes:
      - './telegraf:/etc/telegraf:ro'
      - '${TIBBER_SCRIPTS}:/etc/tibber/bin:rw'

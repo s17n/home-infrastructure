@@ -1,8 +1,8 @@
 #!/bin/sh
 
-composeDir="$(dirname $0)/.."
+composeDir="$(dirname $0)"
 
-op inject -f -i $composeDir/init/.env.tpl -o $composeDir/.env
+op inject -f -i $composeDir/.secrets.template.env -o $composeDir/.secrets.env
 
 if ! [ -f $composeDir/secrets ];
 then 

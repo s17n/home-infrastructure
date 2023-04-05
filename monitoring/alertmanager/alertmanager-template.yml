@@ -1,0 +1,18 @@
+global:
+  resolve_timeout: 1m
+  
+route:
+#  group_by: [ alertname ]
+  receiver: 'gmail-notifications'
+#  repeat_interval: 24h
+
+receivers:
+- name: 'gmail-notifications'
+  email_configs:
+  - to: op://home-infrastructure/alertmanager/gmail/to
+    from: op://home-infrastructure/alertmanager/gmail/from
+    smarthost: smtp.gmail.com:587
+    auth_username: op://home-infrastructure/alertmanager/gmail/auth_username
+    auth_identity: op://home-infrastructure/alertmanager/gmail/auth_identity
+    auth_password: op://home-infrastructure/alertmanager/gmail/auth_password
+    send_resolved: true

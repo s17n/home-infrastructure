@@ -6,9 +6,9 @@ services:
     restart: unless-stopped
     networks:
       - tibber-bridge
-    environment:
-      - TIBBER_API_TOKEN=${TIBBER_API_TOKEN} 
-      - TIBBER_MQTT_BROKER=${TIBBER_MQTT_BROKER}
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:
