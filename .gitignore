@@ -1,6 +1,8 @@
 .DS_Store
 */__**
-*/.env
 */log
-*/config/*
 */data/*
+*/secrets/*
+.secrets.env
+monitoring/alertmanager/alertmanager.yml
+adguardhome/config/AdGuardHome.yaml
