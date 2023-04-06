@@ -24,6 +24,9 @@ services:
       - "traefik.http.routers.adguardhome.tls=true"
       - "traefik.http.routers.adguardhome.tls.certresolver=dns-cloudflare"
       - "traefik.http.services.adguardhome.loadbalancer.server.port=80"
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:
@@ -39,15 +42,9 @@ services:
       - monitoring
     ports:
       - "9617:9617"
-    environment:
-      - adguard_protocol=http
-      - adguard_hostname=adguard
-      - adguard_username=${ADGUARDHOME_ADMIN_USERNAME}
-      - adguard_password=${ADGUARDHOME_ADMIN_PASSWORD}
-      - adguard_port= #optional
-      - server_port=9617
-      - interval=30s
-      - log_limit=10000
+    env_file:
+      - .env
+      - .secrets.env
     logging:
       driver: loki
       options:
