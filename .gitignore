@@ -4,5 +4,6 @@
 */data/*
 */secrets/*
 .secrets.env
-monitoring/alertmanager/alertmanager.yml
 adguardhome/config/AdGuardHome.yaml
+influxdb2/config/influx-configs
+monitoring/alertmanager/alertmanager.yml
