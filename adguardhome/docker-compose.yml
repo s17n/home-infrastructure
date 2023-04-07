@@ -11,7 +11,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "82:80/tcp"
+#      - "82:80/tcp"
 #      - "3030:3000/tcp"
     volumes:
       - ./config:/opt/adguardhome/conf:rw
