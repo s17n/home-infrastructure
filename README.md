@@ -1,12 +1,10 @@
-The main purpose of this project is to:
+Purpose of this project is:
 
-* pay off technical debts - from me / to me - in terms of technical documentation 
-* have a safe place for as much as possible for the case of disaster recovery
-* have revisioned baselines for refinements, optimizations & evaluations of new stuff
+* to pay off technical debts in terms of technical documentation - from me / to me  
+* to have a safe place for as much as possible for the case of disaster recovery
+* to have revisioned baselines for further iterations
 
-for my home infrastructure components.
-
-Details covered in the following sub-sections:
+The following sub-sections cover details:
 
 - [Container & Configurations Overview](docs/container-configuration-overview.md)
 - [Application Integration](docs/application-integration.md)
